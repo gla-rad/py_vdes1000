@@ -1,0 +1,19 @@
+[project]
+name = "vdes1000"
+version = "0.1.0"
+description = "A Python package to facilitate communication with the CML Microcircuits VDES1000 transceiver."
+authors = [
+    {name = "Jan Safar", email = "jan.safar@gla-rad.org"},
+]
+dependencies = []
+requires-python = "==3.11"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[tool.pdm]
+distribution = true
