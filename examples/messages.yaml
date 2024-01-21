@@ -1,0 +1,65 @@
+# Message configuration file.
+
+# AIS Message 21 (AtoN Report)
+ais_msg_21:
+    source_id: 992356001
+    aton_type: 30
+    aton_name: "Jan's Virtual AtoN"
+    pos_accuracy: 1
+    lon: 1.32
+    lat: 51.915
+    dimension:
+        - 1
+        - 2
+        - 3
+        - 4
+    epf_device_type: 0
+    time_stamp: 60
+    off_position: 0
+    aton_status: 0
+    raim_fl: 0
+    vaton_fl: 1
+    assigned_mode_fl: 0
+    aton_name_extension: ""
+
+# Test ASM Payload to be broadcast via AIS
+ais_asm_payload:
+    # Size of application data in bytes (all will be set to zero)
+    # Note: the maximum application data size for an AIS Message 8 supported
+    # through the TSA-VDM pair is currently 38 bytes. A larger payload requires
+    # the use of a multi-sentence VDM message, which the VDES1000 does not
+    # currently support. If this is attempted, the VDES1000 returns the
+    # following NAK sentence:
+    #   $AINAK,,VDM,,10,VDM ignored, because multi-line VDM not supported.
+    # If a (non-compliant) VDM sentence with 39 bytes of Msg 8 aplication data
+    # is sent, the VDES1000 replies with two VDO sentences. If an even larger
+    # payload is used, the VDES1000 does not respond at all.
+    # 38 - longest app data to fit in a single VDM sentence (AIS Message 8)
+    # 66 - longest app data to fit in a 3-slot AIS Message 8
+    n_app_data_bytes: 66
+
+# AIS Message 8 (Binary Broadcast Message)
+ais_msg_8:
+    # MMSI
+    source_id: 111111111
+
+# Test ASM Payload to be broadcast via VDES-ASM
+vdes_asm_payload:
+    # Size of application data in bytes (all will be set to zero)
+    # 157 (158 according to VDES1000 datasheet) - longest app data to fit in a 3-slot VDES-ASM broadcast w/o FEC
+    # 114 (according to the datasheet) - longest app data to fit in a 3-slot VDES-ASM broadcast with FEC
+    n_app_data_bytes: 157
+
+# VDES-ASM Broadcast Message
+asm_broadcast:
+    # MMSI / Source ID
+    # Note: The source_id for VDES-ASM messages should be a 10-digit number
+    # according to the draft IEC VDES-ASM PAS; however, the VDES1000 does not
+    # respond to ABBs with a 10-digit source_id, so using 9 digits instead.
+    source_id: 111111111
+    # Transmission format
+    #   0 - No error coding
+    #   1 - 3/4 FEC
+    #   2 - ASM SAT uplink
+    #   3-9 - Reserved for future use
+    transmission_format: 0

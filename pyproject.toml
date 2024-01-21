@@ -5,8 +5,11 @@ description = "A Python package to facilitate communication with the CML Microci
 authors = [
     {name = "Jan Safar", email = "jan.safar@gla-rad.org"},
 ]
-dependencies = []
-requires-python = "==3.11"
+dependencies = [
+    "pyyaml>=6.0.1",
+    "bitstring>=4.1.4",
+]
+requires-python = ">=3.11"
 readme = "README.md"
 license = {text = "Apache-2.0"}
 
@@ -17,3 +20,14 @@ build-backend = "pdm.backend"
 
 [tool.pdm]
 distribution = true
+
+[tool.pdm.dev-dependencies]
+spyder = [
+    "spyder-kernels==2.5.*",
+]
+dev = [
+    "-e file:///${PROJECT_ROOT}/../py_rec_itu_r_m_1371#egg=rec-itu-r-m-1371",
+    "-e file:///${PROJECT_ROOT}/../py_iec_61162#egg=iec-61162",
+    "-e file:///${PROJECT_ROOT}/../py_iec_pas_63343#egg=iec-pas-63343",
+    "-e file:///${PROJECT_ROOT}/../py_iec_62320#egg=iec-62320",
+]
