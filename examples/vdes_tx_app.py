@@ -2,8 +2,8 @@
 """
 VDES TX App.
 
-Accepts input from the user, sends transmit commands to a VDES1000 transceiver
-and displays the response.
+This example application allows the user to send AIS, VDES-ASM and VDE transmit
+commands to a VDES1000 transceiver and displays the response.
 
 Created on Mon Oct 25 09:43:00 2021
 

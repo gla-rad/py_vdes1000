@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-UDP Interface for the VDES1000 Transceiver.
+UDP Interface Module.
+
+This module provides a class designed to manage communications
+with the VDES1000 transceiver over UDP.
 
 Created on Wed Oct 27 11:15:36 2021
 

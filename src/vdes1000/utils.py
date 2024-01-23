@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Misc. Utilities.
+Utilities Module.
+
+This module contains various utility functions and classes.
 
 Created on Tue Jan 16 10:44:26 2024
 

@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Minimal Example: Transmit Data over VDE.
+Minimal Transmitter.
+
+This example application demonstrates data transmission over VDE in a minimal
+setting.
 
 Created on Mon Jan 22 11:14:15 2024
 

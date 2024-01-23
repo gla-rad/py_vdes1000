@@ -5,7 +5,7 @@
 groups = ["default", "spyder", "dev"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.4.1"
-content_hash = "sha256:4ca77692a0b66764b7d1944e83e1da057dac319aa95831cf4da956324fc54c4f"
+content_hash = "sha256:f428709318c56601bfddd0cb7f8949ca3b17369b6b5c43956c022b05d278db76"
 
 [[package]]
 name = "appnope"
@@ -36,7 +36,7 @@ files = [
 name = "bitarray"
 version = "2.9.2"
 summary = "efficient arrays of booleans -- C extension"
-groups = ["default", "dev"]
+groups = ["default"]
 files = [
     {file = "bitarray-2.9.2-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:fe71fd4b76380c2772f96f1e53a524da7063645d647a4fcd3b651bdd80ca0f2e"},
     {file = "bitarray-2.9.2-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:d527172919cdea1e13994a66d9708a80c3d33dedcf2f0548e4925e600fef3a3a"},
@@ -96,7 +96,7 @@ name = "bitstring"
 version = "4.1.4"
 requires_python = ">=3.7"
 summary = "Simple construction, analysis and modification of binary data."
-groups = ["default", "dev"]
+groups = ["default"]
 dependencies = [
     "bitarray<3.0.0,>=2.8.0",
 ]
@@ -222,10 +222,11 @@ files = [
 name = "iec-61162"
 version = "0.1.0"
 requires_python = ">=3.11"
-editable = true
-path = "../py_iec_61162"
+git = "https://github.com/jan-safar/py_iec_61162.git"
+ref = "v0.1.0"
+revision = "e615086de006ec315beb6176d84064b4f1042ea0"
 summary = "A python package implementing parts of the IEC 61162 series of standards: 'Maritime Navigation and Radiocommunication Equipment and Systems - Digital Interfaces'."
-groups = ["dev"]
+groups = ["default"]
 dependencies = [
     "bitstring>=4.1.4",
 ]
@@ -234,22 +235,25 @@ dependencies = [
 name = "iec-62320"
 version = "0.1.0"
 requires_python = ">=3.11"
-editable = true
-path = "../py_iec_62320"
+git = "https://github.com/jan-safar/py_iec_62320.git"
+ref = "v0.1.0"
+revision = "911f5baf9cbea20d48ee919c2f50aa6b652fe6a2"
 summary = "A Python package that implements parts of the IEC 62320 series of standards: Maritime navigation and radiocommunication equipment and systems - Automatic identification system (AIS)."
-groups = ["dev"]
+groups = ["default"]
 dependencies = [
     "bitstring>=4.1.4",
+    "iec-61162 @ git+https://github.com/jan-safar/py_iec_61162.git@v0.1.0",
 ]
 
 [[package]]
 name = "iec-pas-63343"
 version = "0.1.0"
 requires_python = ">=3.11"
-editable = true
-path = "../py_iec_pas_63343"
+git = "https://github.com/jan-safar/py_iec_pas_63343.git"
+ref = "v0.1.0"
+revision = "c52ab5c39fb199403c1898d059c3da439fb2fc18"
 summary = "A Python package that implements elements of the IEC PAS 63343 standard: Maritime navigation and radiocommunication equipment and systems - VHF data exchange system - Requirements and methods of testing for stations including ASM functionality."
-groups = ["dev"]
+groups = ["default"]
 
 [[package]]
 name = "ipykernel"
@@ -623,10 +627,11 @@ files = [
 name = "rec-itu-r-m-1371"
 version = "0.1.0"
 requires_python = ">=3.11"
-editable = true
-path = "../py_rec_itu_r_m_1371"
+git = "https://github.com/jan-safar/py_rec_itu_r_m_1371.git"
+ref = "v0.1.0"
+revision = "e5c6869a0d3df7fb4929c8203cb8bc2f45d439c5"
 summary = "A Python package that implements elements of Recommendation ITU-R M.1371: Technical characteristics for an automatic identification system using time division multiple access in the VHF maritime mobile frequency band."
-groups = ["dev"]
+groups = ["default"]
 dependencies = [
     "bitstring>=4.1.4",
 ]

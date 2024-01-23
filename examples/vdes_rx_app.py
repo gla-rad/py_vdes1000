@@ -2,7 +2,8 @@
 """
 VDES RX App.
 
-Receives and displays data output by a VDES1000 transceiver.
+This example application receives and displays data output by a VDES1000
+transceiver.
 
 Created on Fri Oct 25 09:43:00 2021
 

@@ -351,7 +351,7 @@ class VDESTransceiver():
 # =============================================================================
 if __name__=='__main__':
     from rec_itu_r_m_1371.messages import AISMessage21
-    from iec_61162.part_450.messages import IEC61162450TestMessage
+    # from iec_61162.part_450.messages import IEC61162450TestMessage
 
     # VDES1000 Transceiver configuration
     cfg = {"user": {"ip_address": "10.0.1.201",
