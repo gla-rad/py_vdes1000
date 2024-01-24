@@ -1,7 +1,7 @@
 # The VDES1000 Python Package
 
 ## Description
-The VDES1000 Python Package simplifies communication with the [CML Microcircuits VDES1000](https://cmlmicro.com/products/maritime-communications/product/vdes1000-vhf-data-exchange-system-vdes-module) transceiver.
+The VDES1000 Python Package offers convenient high-level interfaces for communication with the [CML Microcircuits VDES1000](https://cmlmicro.com/products/maritime-communications/product/vdes1000-vhf-data-exchange-system-vdes-module) transceiver.
 
 It has been developed using Python v.3.11.1.
 
