@@ -31,3 +31,6 @@ spyder = [
 ]
 dev = [
 ]
+testing = [
+    "pytest>=7.4.4",
+]

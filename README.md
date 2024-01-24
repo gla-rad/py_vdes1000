@@ -1,11 +1,13 @@
 # The VDES1000 Python Package
 
 ## Description
+
 The VDES1000 Python Package offers convenient high-level interfaces for communication with the [CML Microcircuits VDES1000](https://cmlmicro.com/products/maritime-communications/product/vdes1000-vhf-data-exchange-system-vdes-module) transceiver.
 
 It has been developed using Python v.3.11.1.
 
 ## Installation
+
 1. Ensure [Python](https://www.python.org/downloads/) and the [PDM](https://pdm-project.org/) dependency manager are installed.
 
 1. Clone the GRAD `py_vdes1000` repository.
@@ -22,7 +24,7 @@ It has been developed using Python v.3.11.1.
     ```
     pdm sync --prod
     ```
-    Upon successful execution of the above command, `pdm` will generate a virtual Python environment in `./.venv/` and install the package along with its required dependencies into it.
+    After successfully executing the above command, `pdm` will generate a virtual Python environment in `./.venv/` and install the package along with its required dependencies into it in *production mode*.
 
 ## Example Applications
 
@@ -33,6 +35,7 @@ Three example applications are included in the `./examples/` directory:
 * `vdes_rx_app.py` displays data received over AIS, VDES-ASM or VDE.
 
 ### Execution Options
+
 These applications can be executed through various methods:
 
 * Python Integrated Development Environment (IDE):
@@ -48,6 +51,7 @@ These applications can be executed through various methods:
     * `pdm` will automatically run the script in the corresponding virtual environment.
 
 ### Example Execution
+
 For example, to execute `minimal_tx.py` using the last method, issue the following commands at the command prompt:
 ```
 cd examples
@@ -88,9 +92,11 @@ Data received from 10.0.2.203:60030:
 For details of the other two example applications, `vdes_tx_app` and `vdes_rx_app`, refer to the corresponding source files.
 
 ## Code Usage
+
 The main modules of the VDES1000 package are located under `./src/vdes1000/`.
 
 ### Module: `trx.py`
+
 This module provides high-level interfaces for initiating AIS, VDES-ASM and VDE transmissions and receiving transceiver responses. It uses IEC-defined Presentation Interface (PI) sentence formatters implemented within the Python packages referenced in the 'Related Projects' section below. These formatters include:
 
 * TSA, 'Transmit slot assignment';
@@ -139,20 +145,19 @@ vdes_trx.udp_interface.close()
 ```
 
 ### Module: `sentences.py`
+
 This module includes classes and functions for generating and parsing CML Microcircuits-propietary PI sentences specific to the VDES1000 transceiver. Currently, support for the EDM sentence, 'VDE data message' has been implemented.
 
 ### Module: `udp.py`
+
 This module provides a class designed to manage UDP communications with the VDES1000 transceiver. It is used by the high-level (`VDESTransceiver`) class defined in the `trx.py` module.
 
 ### Module: `utils.py`
+
 This module contains various utility functions and classes.
 
-## Tests
-This is currently work in progress. 
-
-Unit test modules are expected to be stored under `./tests/`. The testing framework of choice for this project is [pytest](https://pytest.org).  
-
 ## Contributing
+
 We welcome contributions! If you wish to contribute to this project, please follow these steps:
 
 1. Fork the repository and create a new branch.
@@ -162,7 +167,7 @@ We welcome contributions! If you wish to contribute to this project, please foll
     git clone <your_repository_address>
     cd py_vdes1000
     ```
-1. Install the package in development mode using PDM.
+1. Install the package in *development mode* using PDM.
     ```
     pdm sync --dev
     ```    
@@ -170,6 +175,12 @@ We welcome contributions! If you wish to contribute to this project, please foll
     Note: The development installation includes dependencies for the [Spyder IDE](https://www.spyder-ide.org/), which may not be necessary if you are using a different IDE.
 1. Make your changes and test thoroughly.
 1. Submit a pull request with a clear description of your changes.
+
+## Tests
+
+This is currently work in progress. 
+
+Unit test modules are expected to be located in `./tests/`. The chosen testing framework for this project is [pytest](https://pytest.org), included as part of the development installation.
 
 ## License
 
@@ -184,10 +195,12 @@ Issue Tracker: [GitHub Issues](https://github.com/jan-safar/py_vdes1000/issues)
 ## Related Projects
 
 ### Python
+
 * [Recommendation ITU-R M.1371 package](https://github.com/jan-safar/py_rec_itu_r_m_1371.git)
 * [IEC 61162 package](https://github.com/jan-safar/py_iec_61162.git)
 * [IEC 62320 package](https://github.com/jan-safar/py_iec_62320.git)
 * [IEC PAS 63343 package](https://github.com/jan-safar/py_iec_pas_63343.git)
 
 ### Java
+
 * [VDES1000 Library](https://github.com/gla-rad/VDES1000Lib) - a Java port of this package.
