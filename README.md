@@ -104,7 +104,7 @@ Outgoing PI sentences are encapsulated in IEC 61162-450 messages and sent to the
 
 For examples of usage, see the source code of the example applications introduced above. A minimal example is reproduced below.
 
-```
+```python
 # bitstring.BitStream is used throughout to represent data payloads
 from bitstring import BitStream
 from vdes1000.trx import VDESTransceiver
