@@ -12,7 +12,7 @@ It has been developed using Python v.3.11.1.
 
 1. Clone the GRAD `py_vdes1000` repository.
     ```
-    git clone https://github.com/jan-safar/py_vdes1000.git
+    git clone https://github.com/gla-rad/py_vdes1000.git
     ```
 
 1. Navigate to the local repository.
@@ -61,8 +61,8 @@ pdm run minimal_tx.py
 Upon execution, the application will open two UDP sockets to listen for incoming traffic from a VDES1000 transceiver. It will then send an EDM sentence to the transceiver, initiating an addressed VDE transmission of a 32-byte payload. Configuration details, such as the IP address, UDP ports and Destination ID (MMSI) are hardcoded in the source file, `minimal_tx.py`.
 
 ```
-Listening to traffic on UDP port 60030 ... 
-Listening to traffic on UDP port 60031 ... 
+Listening to traffic on UDP port 60030 ...
+Listening to traffic on UDP port 60031 ...
 
 Data sent to 10.0.2.203:60030:
 '\\g:1-1-1,s:1*38\\$AIEDM,0,,992359599,0000000000000000000000000000000000000000000,2*62\r\n'
@@ -162,7 +162,7 @@ We welcome contributions! If you wish to contribute to this project, please foll
 
 1. Fork the repository and create a new branch.
 1. Clone your repository to your local machine.
-    
+
     ```
     git clone <your_repository_address>
     cd py_vdes1000
@@ -170,15 +170,15 @@ We welcome contributions! If you wish to contribute to this project, please foll
 1. Install the package in *development mode* using PDM.
     ```
     pdm sync --dev
-    ```    
-    
+    ```
+
     Note: The development installation includes dependencies for the [Spyder IDE](https://www.spyder-ide.org/), which may not be necessary if you are using a different IDE.
 1. Make your changes and test thoroughly.
 1. Submit a pull request with a clear description of your changes.
 
 ## Tests
 
-This is currently work in progress. 
+This is currently work in progress.
 
 Unit test modules are expected to be located in `./tests/`. The chosen testing framework for this project is [pytest](https://pytest.org), included as part of the development installation.
 
@@ -190,16 +190,16 @@ This project is licensed under the Apache 2.0 License - see the [LICENSE](./LICE
 
 Email: Jan.Safar@gla-rad.org
 
-Issue Tracker: [GitHub Issues](https://github.com/jan-safar/py_vdes1000/issues)
+Issue Tracker: [GitHub Issues](https://github.com/gla-rad/py_vdes1000/issues)
 
 ## Related Projects
 
 ### Python
 
-* [Recommendation ITU-R M.1371 package](https://github.com/jan-safar/py_rec_itu_r_m_1371.git)
-* [IEC 61162 package](https://github.com/jan-safar/py_iec_61162.git)
-* [IEC 62320 package](https://github.com/jan-safar/py_iec_62320.git)
-* [IEC PAS 63343 package](https://github.com/jan-safar/py_iec_pas_63343.git)
+* [Recommendation ITU-R M.1371 package](https://github.com/gla-rad/py_rec_itu_r_m_1371.git)
+* [IEC 61162 package](https://github.com/gla-rad/py_iec_61162.git)
+* [IEC 62320 package](https://github.com/gla-rad/py_iec_62320.git)
+* [IEC PAS 63343 package](https://github.com/gla-rad/py_iec_pas_63343.git)
 
 ### Java
 
