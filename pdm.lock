@@ -5,7 +5,7 @@
 groups = ["default", "dev", "spyder", "testing"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.4.1"
-content_hash = "sha256:5bf6e9c97915203281c265e58b6cb92c58d69d99ba46b94f5fe4763249316a88"
+content_hash = "sha256:9d957780b0836cf52fc83cada356e69c738066aa955151beecf2fd3ad2a22229"
 
 [[package]]
 name = "appnope"
@@ -666,11 +666,11 @@ files = [
 
 [[package]]
 name = "rec-itu-r-m-1371"
-version = "0.2.0"
+version = "0.2.1"
 requires_python = ">=3.11"
 git = "https://github.com/gla-rad/py_rec_itu_r_m_1371.git"
-ref = "v0.2.0"
-revision = "6a8b5ae386f17fde327e13699b7446cc2d32f9ee"
+ref = "v0.2.1"
+revision = "16f4320ec9757294f12805578a5238b7e4eb49a6"
 summary = "A Python package that implements elements of Recommendation ITU-R M.1371: Technical characteristics for an automatic identification system using time division multiple access in the VHF maritime mobile frequency band."
 groups = ["default"]
 dependencies = [
