@@ -1,6 +1,6 @@
 [project]
 name = "vdes1000"
-version = "0.2.0"
+version = "0.2.2"
 description = "A Python package to facilitate communication with the CML Microcircuits VDES1000 transceiver."
 authors = [
     {name = "Jan Safar", email = "jan.safar@gla-rad.org"},
