@@ -178,9 +178,7 @@ We welcome contributions! If you wish to contribute to this project, please foll
 
 ## Tests
 
-This is currently work in progress.
-
-Unit test modules are expected to be located in `./tests/`. The chosen testing framework for this project is [pytest](https://pytest.org), included as part of the development installation.
+Unit test modules are located in `./tests/`. The chosen testing framework for this project is [pytest](https://pytest.org), included as part of the development installation.
 
 ## License
 
@@ -203,4 +201,4 @@ Issue Tracker: [GitHub Issues](https://github.com/gla-rad/py_vdes1000/issues)
 
 ### Java
 
-* [VDES1000 Library](https://github.com/gla-rad/VDES1000Lib) - a Java port of this package.
+* [VDES1000 Library](https://github.com/gla-rad/VDES1000Lib) - a Java port of this package used within the GRAD [e-navigation service framework](https://github.com/orgs/gla-rad/repositories?q=enav).

@@ -205,7 +205,8 @@ class SentenceGenerator:
             n_fill_bits=n_fill_bits,
             talker_id=talker_id)
 
-        self.edm_seq_nr += 1
+        # Increase seq_nr and roll over after 999
+        self.edm_seq_nr = (self.edm_seq_nr + 1) % 1000
 
         return [[edm_sentence]]
 
