@@ -172,7 +172,6 @@ We welcome contributions! If you wish to contribute to this project, please foll
     pdm sync --dev
     ```
 
-    Note: The development installation includes dependencies for the [Spyder IDE](https://www.spyder-ide.org/), which may not be necessary if you are using a different IDE.
 1. Make your changes and test thoroughly.
 1. Submit a pull request with a clear description of your changes.
 
