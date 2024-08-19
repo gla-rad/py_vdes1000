@@ -31,7 +31,9 @@ import time
 # Third-party Modules ---------------------------------------------------------
 
 # Local Modules ---------------------------------------------------------------
+from iec_61162.part_1.sentences import QSentence
 from iec_61162.part_1.sentences import SentenceGenerator as AISMobSentenceGenerator
+from iec_62320.part_1.sentences import BCGSentence
 from iec_62320.part_1.sentences import SentenceGenerator as AISBaseSentenceGenerator
 from iec_pas_63343.sentences import SentenceGenerator as ASMSentenceGenerator
 from vdes1000.sentences import SentenceGenerator as VDESentenceGenerator
@@ -54,8 +56,8 @@ class VDESTransceiver():
     ----------
     cfg : dict
         Transceiver configuration. See vdes_trx_X.yaml
-    recv_cbk_misc : function, optional
-        Receive event callback function for dest_port_misc.
+    recv_cbk_tgtd : function, optional
+        Receive event callback function for dest_port_tgtd.
 
         Expected arguments:
 
@@ -65,17 +67,13 @@ class VDESTransceiver():
             Received data.
 
         The default is None.
-    recv_cbk_aist : function, optional
-        Receive event callback function for dest_port_aist.
-        See also recv_cbk_misc.
-        The default is None.
 
     Returns
     -------
     None.
 
     """
-    def __init__(self, cfg, recv_cbk_misc=None, recv_cbk_aist=None):
+    def __init__(self, cfg, recv_cbk_tgtd=None):
         # Store configuration
         self.cfg = cfg
 
@@ -98,14 +96,9 @@ class VDESTransceiver():
         # Initialise a VDES1000 UDP interface
         self.udp_interface = UDPInterface(
             ip_address=cfg["user"]["ip_address"],
-            dest_port_misc=cfg["user"]["dest_port_misc"],
-            dest_port_aist=cfg["user"]["dest_port_aist"],
-            dest_port_ccrd=cfg["user"]["dest_port_ccrd"],
-            listen_misc=cfg["user"]["listen_misc"],
-            listen_aist=cfg["user"]["listen_aist"],
-            listen_ccrd=cfg["user"]["listen_ccrd"],
-            recv_cbk_misc=recv_cbk_misc,
-            recv_cbk_aist=recv_cbk_aist,
+            dest_port_tgtd=cfg["user"]["dest_port_tgtd"],
+            listen_tgtd=cfg["user"]["listen_tgtd"],
+            recv_cbk_tgtd=recv_cbk_tgtd,
             buffer_size=cfg["user"]["udp_buffer_size"],
             verbosity=cfg["user"]["udp_verbosity"])
 
@@ -113,6 +106,67 @@ class VDESTransceiver():
         while (self.udp_interface.n_rx_threads <
                self.udp_interface.n_listening_ports):
             time.sleep(1)
+
+    def configure_ais_base_station(
+            self,
+            unique_id,
+            tx_power_a=None,
+            tx_power_b=None,
+            vdl_retries=None,
+            vdl_repeat=None,
+            ratdma_control=None,
+            utc_source=None,
+            ads_interval=None,
+            talker_id="AB",
+            rx_channel_a=2087,
+            rx_channel_b=2088,
+            tx_channel_a=2087,
+            tx_channel_b=2088):
+
+        # Create a BCG Sentence
+        sentence = BCGSentence(
+            unique_id=unique_id,
+            tx_power_a=tx_power_a,
+            tx_power_b=tx_power_b,
+            vdl_retries=vdl_retries,
+            vdl_repeat=vdl_repeat,
+            ratdma_control=ratdma_control,
+            utc_source=utc_source,
+            ads_interval=ads_interval,
+            talker_id=talker_id,
+            rx_channel_a=rx_channel_a,
+            rx_channel_b=rx_channel_b,
+            tx_channel_a=tx_channel_a,
+            tx_channel_b=tx_channel_b,
+            sentence_status="C")
+
+        # Send the BCG sentence through the IEC 61162-450 processing
+        iec_messages = self.iec_61162_450_mg.generate_msg([[sentence]])
+
+        # Send the IEC 61162-450 Message via UDP to the VDES1000
+        for msg in iec_messages:
+            self.udp_interface.send_tgtd_iec_msg(msg.string)
+
+    def query_ais_base_station_cfg(
+            self,
+            src_talker_id="AI",
+            dest_talker_id="AB"):
+        """
+        Query the AIS Base Station configuration.
+
+        """
+        # Create a Q sentence
+        sentence = QSentence(
+            src_talker_id=src_talker_id,
+            dest_talker_id=dest_talker_id,
+            formatter="BCG")
+
+        # Send the sentences through the IEC 61162-450 processing
+        iec_messages = self.iec_61162_450_mg.generate_msg([[sentence]])
+
+        # Send the IEC 61162-450 Messages via UDP to the VDES1000
+        for msg in iec_messages:
+            self.udp_interface.send_tgtd_iec_msg(msg.string)
 
     def send_ais_msg(
             self,
@@ -180,7 +234,7 @@ class VDESTransceiver():
 
         # Send the IEC 61162-450 Messages via UDP to the VDES1000
         for msg in iec_messages:
-            self.udp_interface.send_misc_iec_msg(msg.string)
+            self.udp_interface.send_tgtd_iec_msg(msg.string)
 
     def send_ais_binary_broadcast(
             self,
@@ -254,7 +308,7 @@ class VDESTransceiver():
 
         # Send the IEC 61162-450 Messages via UDP to the VDES1000
         for msg in iec_messages:
-            self.udp_interface.send_misc_iec_msg(msg.string)
+            self.udp_interface.send_tgtd_iec_msg(msg.string)
 
     def send_asm_broadcast(
             self,
@@ -318,7 +372,7 @@ class VDESTransceiver():
 
         # Send the IEC 61162-450 Messages via UDP to the VDES1000
         for msg in iec_messages:
-            self.udp_interface.send_misc_iec_msg(msg.string)
+            self.udp_interface.send_tgtd_iec_msg(msg.string)
 
 
     def send_vde_data(
@@ -356,7 +410,7 @@ class VDESTransceiver():
 
         # Send the IEC 61162-450 Messages via UDP to the VDES1000
         for msg in iec_messages:
-            self.udp_interface.send_misc_iec_msg(msg.string)
+            self.udp_interface.send_tgtd_iec_msg(msg.string)
 
 # =============================================================================
 # %% Quick & Dirty Testing
@@ -367,12 +421,8 @@ if __name__=='__main__':
 
     # VDES1000 Transceiver configuration
     cfg = {"user": {"ip_address": "10.0.1.201",
-                    "dest_port_misc": 60000,
-                    "dest_port_aist": 60001,
-                    "dest_port_ccrd": 60003,
-                    "listen_misc": True,
-                    "listen_aist": True,
-                    "listen_ccrd": False,
+                    "dest_port_tgtd": 60002,
+                    "listen_tgtd": True,
                     "talker_id": "1",
                     "udp_buffer_size": 4096,
                     "udp_verbosity": 3}}

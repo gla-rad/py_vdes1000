@@ -1,6 +1,6 @@
 [project]
 name = "vdes1000"
-version = "0.2.3"
+version = "0.3.0"
 description = "A Python package to facilitate communication with the CML Microcircuits VDES1000 transceiver."
 authors = [
     {name = "Jan Safar", email = "jan.safar@gla-rad.org"},
@@ -8,8 +8,8 @@ authors = [
 dependencies = [
     "pyyaml>=6.0.1",
     "bitstring>=4.1.4",
-    "iec-61162 @ git+https://github.com/gla-rad/py_iec_61162.git@v0.2.0",
-    "iec-62320 @ git+https://github.com/gla-rad/py_iec_62320.git@v0.2.0",
+    "iec-61162 @ git+https://github.com/gla-rad/py_iec_61162.git@v0.3.0",
+    "iec-62320 @ git+https://github.com/gla-rad/py_iec_62320.git@v0.3.0",
     "iec-pas-63343 @ git+https://github.com/gla-rad/py_iec_pas_63343.git@v0.2.0",
     "rec-itu-r-m-1371 @ git+https://github.com/gla-rad/py_rec_itu_r_m_1371.git@v0.2.1",
 ]

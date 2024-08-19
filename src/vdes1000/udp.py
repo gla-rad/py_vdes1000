@@ -26,6 +26,7 @@ limitations under the License.
 # %% Import Statements
 # =============================================================================
 import socket
+import struct
 from threading import Thread
 from vdes1000.utils import ts_print as print
 
@@ -45,20 +46,16 @@ class UDPInterface():
     ----------
     ip_address : str
         IP address of the VDES1000.
-    dest_port_misc : int
-        Destination UDP port for miscelaneous sentences.
-    dest_port_aist : int
-        Destination UDP port for AIS target data sentences.
-    dest_port_ccrd : int
-        Destination UDP port for command and command response sentences.
-    listen_misc : bool, optional
-        Listen on dest_port_misc if True. The default is True.
-    listen_aist : bool, optional
-        Listen on dest_port_aist if True. The default is True.
-    listen_ccrd : TYPE, optional
-        Listen on dest_port_ccrd if True. The default is True.
-    recv_cbk_misc : function, optional
-        Receive event callback function for dest_port_misc.
+    ip_address_tgtd : str
+        IP address for the TGTD UDP multicast group. The default is
+        "239.192.0.2".
+    dest_port_tgtd : int
+        Destination port for the TGTD UDP multicast group. The default is
+        60002.
+    listen_tgtd : bool, optional
+        Listen on dest_port_tgtd if True. The default is True.
+    recv_cbk_tgtd : function, optional
+        Receive event callback function for dest_port_tgtd.
 
         Expected arguments:
 
@@ -67,14 +64,6 @@ class UDPInterface():
         data : str
             Received data.
 
-        The default is None.
-    recv_cbk_aist : function, optional
-        Receive event callback function for dest_port_aist.
-        See also recv_cbk_misc.
-        The default is None.
-    recv_cbk_ccrd : function, optional
-        Receive event callback function for dest_port_ccrd.
-        See also recv_cbk_misc.
         The default is None.
     buffer_size : int, optional
         Size of the UDP receiving buffer (bytes). The default is 4096.
@@ -86,26 +75,18 @@ class UDPInterface():
     def __init__(
             self,
             ip_address,
-            dest_port_misc,
-            dest_port_aist,
-            dest_port_ccrd,
-            listen_misc=True,
-            listen_aist=True,
-            listen_ccrd=True,
-            recv_cbk_misc=None,
-            recv_cbk_aist=None,
-            recv_cbk_ccrd=None,
+            ip_address_tgtd="239.192.0.2",
+            dest_port_tgtd=60002,
+            listen_tgtd=True,
+            recv_cbk_tgtd=None,
             buffer_size=4096,
             verbosity=0):
 
         # Initialise attributes
         self.ip_address = ip_address
-        self.dest_port_misc = dest_port_misc
-        self.dest_port_aist = dest_port_aist
-        self.dest_port_ccrd = dest_port_ccrd
-        self.listen_misc = listen_misc
-        self.listen_aist = listen_aist
-        self.listen_ccrd = listen_ccrd
+        self.ip_address_tgtd = ip_address_tgtd
+        self.dest_port_tgtd = dest_port_tgtd
+        self.listen_tgtd = listen_tgtd
         self.buffer_size = buffer_size
         self.verbosity=verbosity
 
@@ -113,27 +94,26 @@ class UDPInterface():
         self.udp_send_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
         # Start threads for receiving data via UDP (one thread per port)
-        # TODO: Add a thread for dest_port_ccrd
-        if any([listen_misc, listen_aist, listen_ccrd]):
+        if any([listen_tgtd]):
             self.run_recv = True
         else:
             self.run_recv = False
 
         self.threads = []
 
-        if listen_misc is True:
+        if listen_tgtd is True:
             t = Thread(
                 target=self.recv,
-                args=(self.dest_port_misc,recv_cbk_misc))
+                args=(self.ip_address_tgtd,self.dest_port_tgtd,recv_cbk_tgtd))
             t.start()
             self.threads.append(t)
 
-        if listen_aist is True:
-            t = Thread(
-                target=self.recv,
-                args=(self.dest_port_aist,recv_cbk_aist))
-            t.start()
-            self.threads.append(t)
+        # if listen_aist is True:
+        #     t = Thread(
+        #         target=self.recv,
+        #         args=(self.dest_port_aist,recv_cbk_aist))
+        #     t.start()
+        #     self.threads.append(t)
 
     @property
     def n_listening_ports(self):
@@ -144,7 +124,7 @@ class UDPInterface():
             Total number of ports the user wishes to listen to.
 
         """
-        return sum([self.listen_misc, self.listen_aist, self.listen_ccrd])
+        return sum([self.listen_tgtd])
 
     @property
     def n_rx_threads(self):
@@ -157,11 +137,11 @@ class UDPInterface():
         """
         return len(self.threads)
 
-    def send_misc_iec_msg(self, msg_str):
+    def send_tgtd_iec_msg(self, msg_str):
         """
-        Send an IEC 61162-450 message carrying a 'miscelaneous' sentence.
+        Send an IEC 61162-450 message to the TGTD port.
 
-        Message is sent to the ip_address and dest_port_misc specified during
+        Message is sent to the ip_address and dest_port_tgtd specified during
         the initialisation of the interface object.
 
         Prints debugging output if self.verbosity > 0.
@@ -179,7 +159,7 @@ class UDPInterface():
         # Send the IEC message to its desitnation via UDP, use UTF-8 encoding
         self.udp_send_sock.sendto(
             msg_str.encode(),
-            (self.ip_address, self.dest_port_misc))
+            (self.ip_address, self.dest_port_tgtd))
         # if self.verbosity > 1:
         #     print(
         #         "\nData sent to {:s}:{:d}:".format(
@@ -189,21 +169,23 @@ class UDPInterface():
         if self.verbosity > 1:
             print_str = (
                 "\nData sent to {:s}:{:d}".format(
-                    self.ip_address, self.dest_port_misc))
+                    self.ip_address, self.dest_port_tgtd))
         if self.verbosity > 2:
             print_str += (":\n" + repr(msg_str))
 
         print(print_str, flush=True)
 
 
-    def recv(self, port, recv_cbk):
+    def recv(self, ip_address, port, recv_cbk):
         """
-        Receive data on a specified UDP port.
+        Receive data from a UDP multicast group.
 
         Prints debugging output if self.verbosity > 0.
 
         Parameters
         ----------
+        ip_address : str
+            IP address of the multicast group.
         port : int
             UDP port to listen on.
         recv_cbk : function
@@ -225,15 +207,30 @@ class UDPInterface():
             print("Listening to traffic on UDP port {:d} ... ".format(port),
                   flush=True)
 
+        # Create a UDP socket for receiving data
         udp_recv_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
+        # Set a timeout for the receive operation
         udp_recv_sock.settimeout(5)
 
-        udp_recv_sock.bind(("", port))
+        # Allow multiple sockets to use the same address/port
+        udp_recv_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+        # Bind the socket to the specified port
+        udp_recv_sock.bind(("", port))  # Empty string binds to all interfaces
         # Apparently this is not possible, so have to use different ports on
         # different VDES units.
         # udp_recv_sock.bind((self.ip_address, port))
         # TODO: Test this again with actual VDES1000 hardware:
+
+        # Join the multicast group - tell the operating system to add the socket
+        # to the multicast group on all interfaces
+        group = socket.inet_aton(self.ip_address_tgtd)
+        mreq = struct.pack("4sL", group, socket.INADDR_ANY)
+        udp_recv_sock.setsockopt(
+            socket.IPPROTO_IP,
+            socket.IP_ADD_MEMBERSHIP,
+            mreq)
 
         while self.run_recv:
             try:

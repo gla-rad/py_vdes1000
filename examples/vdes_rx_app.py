@@ -38,7 +38,7 @@ from vdes1000.trx import VDESTransceiver
 # =============================================================================
 # %% Function Definitions
 # =============================================================================
-def recv_cbk_misc(address, data):
+def recv_cbk_tgtd(address, data):
     # Do stuff with received data
     pass
 
@@ -128,8 +128,7 @@ with open("vdes_trx_2.yaml") as file:
 # Initialise a VDES Transceiver object
 vdes_trx = VDESTransceiver(
     cfg=trx_cfg,
-    recv_cbk_misc=recv_cbk_misc,
-    recv_cbk_aist=vp.process_rx_data)
+    recv_cbk_tgtd=vp.process_rx_data)
 
 # =============================================================================
 # %% Main Programme "Loop"

@@ -34,6 +34,7 @@ from bitstring import BitStream
 
 # Local Modules ---------------------------------------------------------------
 from vdes1000.utils import ts_print as print
+from iec_62320.part_1.sentences import BCGSentence
 from rec_itu_r_m_1371.messages import AISMessage21, AISMessage8
 from rec_itu_r_m_1371.asm_payloads import SampleASMPayload1
 from vdes1000.trx import VDESTransceiver
@@ -41,11 +42,7 @@ from vdes1000.trx import VDESTransceiver
 # =============================================================================
 # %% Function Definitions
 # =============================================================================
-def recv_cbk_misc(address, data):
-    # Do stuff with received data
-    pass
-
-def recv_cbk_aist(address, data):
+def recv_cbk_tgtd(address, data):
     # Do stuff with received data
     pass
 
@@ -135,6 +132,8 @@ with open("vdes_trx_1.yaml") as file:
 with open("messages.yaml") as file:
     messages = yaml.full_load(file)
 
+
+
 # Initialise an AIS Message 21 object
 ais_msg_21 = AISMessage21(**messages["ais_msg_21"])
 
@@ -157,8 +156,7 @@ pi_data_payload_bs = BitStream(384*2)
 # Initialise a VDES Transceiver object
 vdes_trx = VDESTransceiver(
     cfg=trx_cfg,
-    recv_cbk_misc=recv_cbk_misc,
-    recv_cbk_aist=recv_cbk_aist)
+    recv_cbk_tgtd=recv_cbk_tgtd)
 
 # AIS transmit channel
 ais_tx_ch = ["AIS 1", "AIS 2"]
@@ -182,15 +180,17 @@ while True:
     print(
 f"""
 0 - Exit
-1 - Transmit AIS Message 21 (AtoN) on {ais_tx_ch[i_ais_tx_ch]}
-2 - Transmit AIS Message 8 (Binary Broadcast Message on {ais_tx_ch[i_ais_tx_ch]}
-3 - Transmit a VDES-ASM Broadcast Message on {asm_tx_ch[i_asm_tx_ch]}
-4 - Send an Addressed VDE Data Transmission
-5 - Toggle AIS channel
-6 - Toggle ASM channel""", flush=True)
+1 - Enable RATDMA on AIS channels
+2 - Query AIS base station configuration
+3 - Transmit AIS Message 21 (AtoN) on {ais_tx_ch[i_ais_tx_ch]}
+4 - Transmit AIS Message 8 (Binary Broadcast Message on {ais_tx_ch[i_ais_tx_ch]}
+5 - Transmit a VDES-ASM Broadcast Message on {asm_tx_ch[i_asm_tx_ch]}
+6 - Send an Addressed VDE Data Transmission
+7 - Toggle AIS channel
+8 - Toggle ASM channel""", flush=True)
 
     # Ask for user input and act on it
-    ui = user_input("\nSelect action", "int", limits=[0,6])
+    ui = user_input("\nSelect action", "int", limits=[0,9])
 
     if ui == 0:
         print(
@@ -200,12 +200,23 @@ Exiting -----------------------------------------------------------------------
         break
 
     elif ui == 1:
+        # Enable RATDMA on AIS channels
+        vdes_trx.configure_ais_base_station(
+                "BASE1",
+                ratdma_control=1,
+                talker_id="AB")
+
+    elif ui == 2:
+        # Query AIS base station configuration
+        vdes_trx.query_ais_base_station_cfg("AI", "AB")
+
+    elif ui == 3:
         # Send AIS Message 21 on the requested channel
         vdes_trx.send_ais_msg(
             msg_bs=ais_msg_21.bitstream,
             channel=ais_tx_ch[i_ais_tx_ch])
 
-    elif ui == 2:
+    elif ui == 4:
         # Send AIS binary broadcast message on the requested channel
         # and using the requested method
         if trx_cfg["user"]["ais_bin_broadcast_method"] == "tsa-vdm":
@@ -222,7 +233,7 @@ Exiting -----------------------------------------------------------------------
         else:
             print("Unknown AIS binary broadcast method!")
 
-    elif ui == 3:
+    elif ui == 5:
         # Send a VDES-ASM Broadcast Message on the requested channel
         vdes_trx.send_asm_broadcast(
             asm_payload_bs=vdes_asm_payload.bitstream,
@@ -230,20 +241,24 @@ Exiting -----------------------------------------------------------------------
             channel=asm_tx_ch[i_asm_tx_ch],
             transmission_format=messages["asm_broadcast"]["transmission_format"])
 
-    elif ui == 4:
+    elif ui == 6:
         # Initiate an addressed VDE data transmission
         vdes_trx.send_vde_data(
             pi_data_payload_bs=pi_data_payload_bs,
             destination_id="992359599")
 
-    elif ui == 5:
+    # elif ui == 7:
+    #     # Testing
+    #     vdes_trx.udp_interface.send_tgtd_iec_msg("\\g:1-1-47,s:tt00,n:47*40\\$ABAIQ,BCG*30\r\n")
+
+    elif ui == 7:
         i_ais_tx_ch = (i_ais_tx_ch + 1) % len(ais_tx_ch)
 
-    elif ui == 6:
+    elif ui == 8:
         i_asm_tx_ch = (i_asm_tx_ch + 1) % len(asm_tx_ch)
 
     # Provide time for communications to happen before printing the menu again
-    if 0 < ui < 5:
+    if 0 < ui < 7:
         sleep(5)
 
 # Close the recieving UDP sockets and stop the associated threads

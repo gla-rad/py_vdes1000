@@ -4,25 +4,18 @@
 user:
     # IP address of the VDES1000 unit
     ip_address: "10.0.2.203" # "10.0.1.201" # "127.0.0.1"
-    # Destination UDP port for miscelaneous sentences
-    dest_port_misc: 60030
-    # Destination UDP port for AIS target data sentences
-    dest_port_aist: 60031
-    # Destination UDP port for command and command response sentences
-    # (not used in this System)
-    dest_port_ccrd: 60033
-    # Listen on dest_port_misc if True
-    listen_misc: True
-    # Listen on dest_port_aist if True
-    listen_aist: True
-    # Listen on dest_port_ccrd if True
-    listen_ccrd: False
+    # IP address for the TGTD UDP multicast group
+    ip_address_tgtd: "239.192.0.2"
+    # Destination port for the TGTD UDP multicast group
+    dest_port_tgtd: 60002
+    # Listen on dest_port_tgtd if True
+    listen_tgtd: True
     # Size of the UDP receiving buffer (Bytes)
     udp_buffer_size: 4096
     # Verbosity for the UDP interface (0-3) - set > 0 for debugging
     udp_verbosity: 3
     # Used in IEC 61162-450 comms.
-    talker_id: "1"
+    talker_id: "tt03"
     # AIS binary broadcast method
     #   "bbm": Use the BBM sentence; max. app. data size: 66 bytes;
     #   "tsa-vda': Use the TSA-VDA sentence pair; max app. data size: 38 bytes.
