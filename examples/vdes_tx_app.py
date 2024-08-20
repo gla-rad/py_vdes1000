@@ -211,16 +211,16 @@ Exiting -----------------------------------------------------------------------
         vdes_trx.query_ais_base_station_cfg("AI", "AB")
 
     elif ui == 3:
-        # Send AIS Message 21 on the requested channel
-        vdes_trx.send_ais_msg(
+        # Send AIS Message 21 on the requested channel using RATDMA
+        vdes_trx.send_ais_msg_ratdma(
             msg_bs=ais_msg_21.bitstream,
             channel=ais_tx_ch[i_ais_tx_ch])
 
     elif ui == 4:
         # Send AIS binary broadcast message on the requested channel
         # and using the requested method
-        if trx_cfg["user"]["ais_bin_broadcast_method"] == "tsa-vdm":
-            vdes_trx.send_ais_msg(
+        if trx_cfg["user"]["ais_bin_broadcast_method"] == "vdm":
+            vdes_trx.send_ais_msg_ratdma(
                 msg_bs=ais_msg_8.bitstream,
                 channel=ais_tx_ch[i_ais_tx_ch])
 

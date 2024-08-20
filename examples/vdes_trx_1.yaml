@@ -18,5 +18,7 @@ user:
     talker_id: "tt03"
     # AIS binary broadcast method
     #   "bbm": Use the BBM sentence; max. app. data size: 66 bytes;
-    #   "tsa-vda': Use the TSA-VDA sentence pair; max app. data size: 38 bytes.
+    #   "vdm': Use the VDM sentence; max app. data size: 38 bytes.
+    # TODO: Confirm the app. data size limit for the 'vdm' method; the above
+    # limitation applied when using TSA-VDM
     ais_bin_broadcast_method: "bbm"

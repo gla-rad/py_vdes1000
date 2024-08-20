@@ -168,7 +168,7 @@ class VDESTransceiver():
         for msg in iec_messages:
             self.udp_interface.send_tgtd_iec_msg(msg.string)
 
-    def send_ais_msg(
+    def send_ais_msg_fatdma(
             self,
             msg_bs,
             channel,
@@ -177,15 +177,15 @@ class VDESTransceiver():
             start_slot="",
             priority=2):
         """
-        Send an arbitrary AIS message.
+        Send an arbitrary AIS message using FATDMA.
 
-        Uses the TSA-VDM sentence pair.
+        Issues a TSA-VDM sentence pair to send the AIS message in a specified
+        time slot.
 
-        Uses RATDMA when utc_hhmm and start_slot are both set to null (""),
-        otherwise will use FATDMA.
-
-        The VDES1000 FeatureMask bit 7 (TSA-VDM RATDMA) must be enabled
-        when this method is used.
+        Note: When the TSA-VDM RATDMA feature is enabled on the VDES1000
+        (FeatureMask bit 7) and utc_hhmm and start_slot are both set to null
+        (""), the unit will use RATDMA. However, this feature is not standards
+        compliant and will likely be removed in future firmware updates.
 
         Parameters
         ----------
@@ -228,6 +228,54 @@ class VDESTransceiver():
             utc_hhmm=utc_hhmm,
             start_slot=start_slot,
             priority=priority)
+
+        # Send the sentences through the IEC 61162-450 processing
+        iec_messages = self.iec_61162_450_mg.generate_msg(sentences)
+
+        # Send the IEC 61162-450 Messages via UDP to the VDES1000
+        for msg in iec_messages:
+            self.udp_interface.send_tgtd_iec_msg(msg.string)
+
+    def send_ais_msg_ratdma(
+            self,
+            msg_bs,
+            channel):
+        """
+        Send an arbitrary AIS message using RATDMA.
+
+        Issues a VDM sentence.
+
+        Assumes that RATDMA has been enabled for AIS on the VDES1000.
+
+        TODO: Consider adding a query to check if RATDMA is enabled, and if not,
+        raise an error.
+
+        Parameters
+        ----------
+        msg_bs : bitstring.BitStream
+            AIS message bitstream, formatted as per Rec. ITU-R M.1371.
+        channel : str
+            Channel selection ('AIS 1' or 'AIS 2').
+
+        Raises
+        ------
+        ValueError
+            if an unknown channel value is used.
+
+        Returns
+        -------
+        None.
+
+        """
+        channel_dict = {"AIS 1": "A", "AIS 2": "B"}
+
+        if channel not in channel_dict:
+            raise ValueError("Unknown channel value.")
+
+        # Encapsulate the message in VDE sentences
+        sentences = self.ais_base_sg.generate_vdm(
+            msg_bs=msg_bs,
+            channel=channel_dict[channel])
 
         # Send the sentences through the IEC 61162-450 processing
         iec_messages = self.iec_61162_450_mg.generate_msg(sentences)
