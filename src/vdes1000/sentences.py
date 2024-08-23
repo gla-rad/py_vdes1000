@@ -160,6 +160,8 @@ class SentenceGenerator:
         """
         Generate an EDM sentence encapsulating a PI Data Payload bitstream.
 
+        Note: The EDM sentence formatter has now been deprecated in the VDES1000.
+
         Parameters
         ----------
         pi_data_payload_bs : bitstring.BitStream

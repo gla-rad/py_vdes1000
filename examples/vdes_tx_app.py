@@ -132,8 +132,6 @@ with open("vdes_trx_1.yaml") as file:
 with open("messages.yaml") as file:
     messages = yaml.full_load(file)
 
-
-
 # Initialise an AIS Message 21 object
 ais_msg_21 = AISMessage21(**messages["ais_msg_21"])
 
@@ -152,6 +150,21 @@ vdes_asm_payload = SampleASMPayload1(
 # Create a PI Data Payload to be transmitted over VDE
 # Note: The size must be an integer multiple of 8 bits.
 pi_data_payload_bs = BitStream(384*2)
+
+# AIS Spoofing Test A
+# Initialise AIS Message 21 objects
+ais_spoof_a_msgs = [
+    AISMessage21(**messages["ais_spoof_a_msg_21_1"]),
+    AISMessage21(**messages["ais_spoof_a_msg_21_2"]),
+    AISMessage21(**messages["ais_spoof_a_msg_21_3"]),
+    AISMessage21(**messages["ais_spoof_a_msg_21_4"])]
+    # AISMessage21(**messages["ais_spoof_a_msg_21_5"]),
+    # AISMessage21(**messages["ais_spoof_a_msg_21_6"]),
+    # AISMessage21(**messages["ais_spoof_a_msg_21_7"])]
+
+# AIS Spoofing Test B
+# Initialise an AIS Message 21 object
+ais_spoof_b_msg_21 = AISMessage21(**messages["ais_spoof_b_msg_21"])
 
 # Initialise a VDES Transceiver object
 vdes_trx = VDESTransceiver(
@@ -186,8 +199,10 @@ f"""
 4 - Transmit AIS Message 8 (Binary Broadcast Message on {ais_tx_ch[i_ais_tx_ch]}
 5 - Transmit a VDES-ASM Broadcast Message on {asm_tx_ch[i_asm_tx_ch]}
 6 - Send an Addressed VDE Data Transmission
-7 - Toggle AIS channel
-8 - Toggle ASM channel""", flush=True)
+7 - AIS Spoofing Test A
+8 - AIS Spoofing Test B
+9 - Toggle AIS channel
+10 - Toggle ASM channel""", flush=True)
 
     # Ask for user input and act on it
     ui = user_input("\nSelect action", "int", limits=[0,9])
@@ -212,7 +227,10 @@ Exiting -----------------------------------------------------------------------
 
     elif ui == 3:
         # Send AIS Message 21 on the requested channel using RATDMA
-        vdes_trx.send_ais_msg_ratdma(
+        # vdes_trx.send_ais_msg_ratdma(
+        #     msg_bs=ais_msg_21.bitstream,
+        #     channel=ais_tx_ch[i_ais_tx_ch])
+        vdes_trx.send_ais_msg_fatdma(
             msg_bs=ais_msg_21.bitstream,
             channel=ais_tx_ch[i_ais_tx_ch])
 
@@ -252,13 +270,34 @@ Exiting -----------------------------------------------------------------------
     #     vdes_trx.udp_interface.send_tgtd_iec_msg("\\g:1-1-47,s:tt00,n:47*40\\$ABAIQ,BCG*30\r\n")
 
     elif ui == 7:
-        i_ais_tx_ch = (i_ais_tx_ch + 1) % len(ais_tx_ch)
+        # AIS Spoofing Test A
+        # Send AIS Messages 21 on the requested channel using RATDMA
+        # vdes_trx.send_ais_msg_ratdma(
+        #     msg_bs=ais_msg_21.bitstream,
+        #     channel=ais_tx_ch[i_ais_tx_ch])
+        for ais_msg in ais_spoof_a_msgs:
+            vdes_trx.send_ais_msg_fatdma(
+                msg_bs=ais_msg.bitstream,
+                channel=ais_tx_ch[i_ais_tx_ch])
+            # FIXME: This is a quick and dirty fix to prevent the transceiver
+            # from mixing up the messages.
+            sleep(3)
 
     elif ui == 8:
+        # AIS Spoofing Test A
+        # Send AIS Messages 21 on the requested channel using RATDMA
+        vdes_trx.send_ais_msg_fatdma(
+            msg_bs=ais_spoof_b_msg_21.bitstream,
+            channel=ais_tx_ch[i_ais_tx_ch])
+
+    elif ui == 9:
+        i_ais_tx_ch = (i_ais_tx_ch + 1) % len(ais_tx_ch)
+
+    elif ui == 10:
         i_asm_tx_ch = (i_asm_tx_ch + 1) % len(asm_tx_ch)
 
     # Provide time for communications to happen before printing the menu again
-    if 0 < ui < 7:
+    if 0 < ui < 9:
         sleep(5)
 
 # Close the recieving UDP sockets and stop the associated threads

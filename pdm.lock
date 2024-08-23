@@ -5,7 +5,7 @@
 groups = ["default", "dev", "spyder", "testing"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:666216980709ae477dd24831b2543bcf0e26c780f8639caaa05137887af0e14a"
+content_hash = "sha256:d8d9f6e8e627fef4bad06baf373e9887b59abe70bfe3b9b218b73c15a9122d8b"
 
 [[metadata.targets]]
 requires_python = ">=3.11"
@@ -110,11 +110,11 @@ dependencies = [
 
 [[package]]
 name = "iec-62320"
-version = "0.4.0"
+version = "0.4.1"
 requires_python = ">=3.11"
 git = "https://github.com/gla-rad/py_iec_62320.git"
-ref = "v0.4.0"
-revision = "e7b24a7fdee94493c2eebd468feeff0a6d0ba77d"
+ref = "v0.4.1"
+revision = "90d40e3359af06f71d5aa1fdcc2e8e5b70e97cce"
 summary = "A Python package that implements parts of the IEC 62320 series of standards: Maritime navigation and radiocommunication equipment and systems - Automatic identification system (AIS)."
 groups = ["default"]
 dependencies = [

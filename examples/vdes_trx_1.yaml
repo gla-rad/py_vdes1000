@@ -3,13 +3,13 @@
 # in the VDES1000.
 user:
     # IP address of the VDES1000 unit
-    ip_address: "10.0.2.203" # "10.0.1.201" # "127.0.0.1"
+    ip_address: "10.0.2.201" # "10.0.2.203" # "10.0.1.201" # "127.0.0.1"
     # IP address for the TGTD UDP multicast group
     ip_address_tgtd: "239.192.0.2"
     # Destination port for the TGTD UDP multicast group
-    dest_port_tgtd: 60002
+    dest_port_tgtd: 60010 # 60002
     # Listen on dest_port_tgtd if True
-    listen_tgtd: True
+    listen_tgtd: False
     # Size of the UDP receiving buffer (Bytes)
     udp_buffer_size: 4096
     # Verbosity for the UDP interface (0-3) - set > 0 for debugging
