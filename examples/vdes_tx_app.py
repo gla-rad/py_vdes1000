@@ -154,13 +154,13 @@ pi_data_payload_bs = BitStream(384*2)
 # AIS Spoofing Test A
 # Initialise AIS Message 21 objects
 ais_spoof_a_msgs = [
-    AISMessage21(**messages["ais_spoof_a_msg_21_1"]),
-    AISMessage21(**messages["ais_spoof_a_msg_21_2"]),
-    AISMessage21(**messages["ais_spoof_a_msg_21_3"]),
-    AISMessage21(**messages["ais_spoof_a_msg_21_4"])]
-    # AISMessage21(**messages["ais_spoof_a_msg_21_5"]),
-    # AISMessage21(**messages["ais_spoof_a_msg_21_6"]),
-    # AISMessage21(**messages["ais_spoof_a_msg_21_7"])]
+    # AISMessage21(**messages["ais_spoof_a_msg_21_1"]),
+    # AISMessage21(**messages["ais_spoof_a_msg_21_2"]),
+    # AISMessage21(**messages["ais_spoof_a_msg_21_3"]),
+    # AISMessage21(**messages["ais_spoof_a_msg_21_4"]),
+    AISMessage21(**messages["ais_spoof_a_msg_21_5"]),
+    AISMessage21(**messages["ais_spoof_a_msg_21_6"]),
+    AISMessage21(**messages["ais_spoof_a_msg_21_7"])]
 
 # AIS Spoofing Test B
 # Initialise an AIS Message 21 object
