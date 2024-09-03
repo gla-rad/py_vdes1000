@@ -155,16 +155,16 @@ asm_broadcast:
 
 # AIS Message 21 (AtoN Report)
 ais_spoof_a_msg_21_5:
-    source_id: 992356721
-    # aton_type: 4
-    aton_type: 20
-    # aton_name: "GRAD Wreck"
-    aton_name: "GRAD Mark"
+    source_id: 992356720
+    aton_type: 4
+    # aton_type: 20
+    aton_name: "GRAD Wreck"
+    # aton_name: "GRAD Mark"
     pos_accuracy: 1
-    # lon: 1.435185
-    # lat: 51.908333
-    lon: 1.423439
-    lat: 51.899197
+    lon: 1.435185
+    lat: 51.908333
+    # lon: 1.423439
+    # lat: 51.899197
     dimension:
         - 1
         - 2
@@ -182,15 +182,15 @@ ais_spoof_a_msg_21_5:
 # AIS Message 21 (AtoN Report)
 ais_spoof_a_msg_21_6:
     source_id: 992356722
-    # aton_type: 4
-    aton_type: 20
-    # aton_name: "GRAD Wreck"
-    aton_name: "GRAD Mark"
+    aton_type: 4
+    # aton_type: 20
+    aton_name: "GRAD Wreck"
+    # aton_name: "GRAD Mark"
     pos_accuracy: 1
-    # lon: 1.428752
-    # lat: 51.906180
-    lon: 1.414880
-    lat: 51.888788
+    lon: 1.428752
+    lat: 51.906180
+    # lon: 1.414880
+    # lat: 51.888788
     dimension:
         - 1
         - 2
@@ -208,15 +208,15 @@ ais_spoof_a_msg_21_6:
 # AIS Message 21 (AtoN Report)
 ais_spoof_a_msg_21_7:
     source_id: 992356723
-    # aton_type: 4
-    aton_type: 20
-    # aton_name: "GRAD Wreck"
-    aton_name: "GRAD Mark"
+    aton_type: 4
+    # aton_type: 20
+    aton_name: "GRAD Wreck"
+    # aton_name: "GRAD Mark"
     pos_accuracy: 1
-    # lon: 1.433333
-    # lat: 51.9
-    lon: 1.432502
-    lat: 51.888633
+    lon: 1.433333
+    lat: 51.9
+    # lon: 1.432502
+    # lat: 51.888633
     dimension:
         - 1
         - 2

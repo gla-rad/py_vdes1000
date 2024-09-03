@@ -156,7 +156,7 @@ pi_data_payload_bs = BitStream(384*2)
 ais_spoof_a_msgs = [
     # AISMessage21(**messages["ais_spoof_a_msg_21_1"]),
     # AISMessage21(**messages["ais_spoof_a_msg_21_2"]),
-    # AISMessage21(**messages["ais_spoof_a_msg_21_3"]),
+    # AISMessage21(**messages["ais_spoof_a_7msg_21_3"]),
     # AISMessage21(**messages["ais_spoof_a_msg_21_4"]),
     AISMessage21(**messages["ais_spoof_a_msg_21_5"]),
     AISMessage21(**messages["ais_spoof_a_msg_21_6"]),
