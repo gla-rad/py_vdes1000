@@ -205,7 +205,7 @@ f"""
 10 - Toggle ASM channel""", flush=True)
 
     # Ask for user input and act on it
-    ui = user_input("\nSelect action", "int", limits=[0,9])
+    ui = user_input("\nSelect action", "int", limits=[0,10])
 
     if ui == 0:
         print(
