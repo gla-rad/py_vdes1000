@@ -263,7 +263,8 @@ Exiting -----------------------------------------------------------------------
         # Initiate an addressed VDE data transmission
         vdes_trx.send_vde_data(
             pi_data_payload_bs=pi_data_payload_bs,
-            destination_id="992359599")
+            # destination_id="992359599")
+            destination_id="")
 
     # elif ui == 7:
     #     # Testing

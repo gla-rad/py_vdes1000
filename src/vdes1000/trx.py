@@ -36,7 +36,8 @@ from iec_61162.part_1.sentences import SentenceGenerator as AISMobSentenceGenera
 from iec_62320.part_1.sentences import BCGSentence
 from iec_62320.part_1.sentences import SentenceGenerator as AISBaseSentenceGenerator
 from iec_pas_63343.sentences import SentenceGenerator as ASMSentenceGenerator
-from vdes1000.sentences import SentenceGenerator as VDESentenceGenerator
+# from vdes1000.sentences import SentenceGenerator as VDESentenceGenerator
+from iec_63514.sentences import SentenceGenerator as VDESentenceGenerator
 from iec_61162.part_450.messages import MessageGenerator
 from vdes1000.udp import UDPInterface
 
@@ -77,7 +78,7 @@ class VDESTransceiver():
         # Store configuration
         self.cfg = cfg
 
-        # Initialise an AIS Base Statopm Sentence Generator
+        # Initialise an AIS Base Station Sentence Generator
         self.ais_base_sg = AISBaseSentenceGenerator()
 
         # Initialise an AIS Mobile Station Sentence Generator
@@ -430,9 +431,9 @@ class VDESTransceiver():
         """
         Send data over VDE.
 
-        Uses the VDE Data Message (EDM) sentence.
+        Uses the Terrestrial Binary Data (TDB) sentence formatter.
 
-        The VDES1000 FeatureMask bit TBD (VDE) must be enabled when this method
+        The VDES1000 FeatureMask bit for VDE must be enabled when this method
         is used.
 
         Parameters
@@ -441,17 +442,18 @@ class VDESTransceiver():
             PI Data Payload bitstream.
         destination_id : int
             Destination ID (VDES1000 currently only supports 9 digits but
-            should be 10 digits as per the draft IEC VDES-ASM PAS).
+            this should probably be 10 digits as per Rec. ITU-R M.2092-1).
 
         Returns
         -------
         None.
 
         """
-        # Send the payload down the Presentation Layer
-        sentences = self.vde_sg.generate_edm(
-            pi_data_payload_bs=pi_data_payload_bs,
-            destination_id=destination_id)
+        # Generate TDB sentence(s) encapsulating the PI data payload
+        sentences = self.vde_sg.generate_tdb(
+            destination_id=destination_id,
+            priority=2,
+            data_bs=pi_data_payload_bs)
 
         # Send the sentences through the IEC 61162-450 processing
         iec_messages = self.iec_61162_450_mg.generate_msg(sentences)
