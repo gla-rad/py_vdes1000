@@ -218,6 +218,8 @@ Exiting -----------------------------------------------------------------------
         # Enable RATDMA on AIS channels
         vdes_trx.configure_ais_base_station(
                 "BASE1",
+                tx_power_a=1,
+                tx_power_b=1,
                 ratdma_control=1,
                 talker_id="AB")
 
