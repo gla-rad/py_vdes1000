@@ -179,6 +179,19 @@ We welcome contributions! If you wish to contribute to this project, please foll
 
 Unit test modules are located in `./tests/`. The chosen testing framework for this project is [pytest](https://pytest.org), included as part of the development installation.
 
+## Transceiver Firmware
+
+The latest versions of the VDES1000 transceiver firmware tested with this package are listed in the table below.
+
+| Software Type | Application Version |
+|----------------|--------------------|
+| SOF-0027 (VDES Base Station Application) | 8.0.54AA2781 |
+| SOF-0002 (VDES Module Embedded Application) | 8.0.F5B74880 |
+
+## Known Issues
+
+VDES1000 firmware version 8.0 no longer supports the use of the `TDB` sentence for transmitting VDE data implemented in this package. The `TDB` sentence functionality has been replaced by PI binary message structures defined in IEC 63514 CD, which have not yet been implemented in this package.
+
 ## License
 
 This project is licensed under the Apache 2.0 License - see the [LICENSE](./LICENSE) file for details.
